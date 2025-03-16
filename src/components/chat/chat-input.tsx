@@ -40,8 +40,8 @@ export const ChatInput: FC<ChatInputProps> = ({
   }
 
   return (
-    <div className="relative">
-      <form onSubmit={handleSubmit} className="relative flex items-center">
+    <div className="relative mx-4 mb-8 sm:mx-0">
+      <form onSubmit={handleSubmit} className="relative flex items-center ">
         <div className="relative w-full">
           <TextareaAutosize
             ref={textareaRef}

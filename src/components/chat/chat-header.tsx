@@ -46,7 +46,6 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
             </Tooltip>
           </TooltipProvider>
         )}
-        .
 
         <Link href={"/"} className="flex items-center space-x-2">
           <div className="bg-law-secondary p-1.5 rounded-md shadow-sm">

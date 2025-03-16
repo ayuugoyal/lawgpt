@@ -65,7 +65,9 @@ export default function NewChatPage() {
                 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800
                 scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                 <div>
-                    <WelcomeMessage />
+                    <WelcomeMessage
+                        handleInputChange={handleInputChange}
+                    />
                 </div>
             </div>
 

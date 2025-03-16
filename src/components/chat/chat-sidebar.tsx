@@ -49,7 +49,6 @@ export function ChatSidebar() {
             const response = await fetch("/api/chats");
             const data = await response.json();
 
-            // Transform the data and add some sample pinned/unread statuses
             const transformedChats = data.map((chat: ChatSession) => ({
                 ...chat,
                 createdAt: new Date(chat.createdAt),

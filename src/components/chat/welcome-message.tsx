@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button"
 
 interface WelcomeMessageProps {
   onNewProject?: () => void
+  handleInputChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
-export function WelcomeMessage({ onNewProject }: WelcomeMessageProps) {
+export function WelcomeMessage({ onNewProject, handleInputChange }: WelcomeMessageProps) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -17,28 +18,18 @@ export function WelcomeMessage({ onNewProject }: WelcomeMessageProps) {
   }, [])
 
   const handleSuggestionClick = (text: string) => {
-    const textareaElement = document.querySelector("textarea")
-    if (textareaElement) {
-      // Set the value directly
-      textareaElement.value = text
-
-      // Create and dispatch an input event to trigger React's onChange
-      const inputEvent = new Event("input", { bubbles: true })
-      textareaElement.dispatchEvent(inputEvent)
-
-      // Focus the textarea
-      textareaElement.focus()
+    if (handleInputChange) {
+      handleInputChange({ target: { value: text } } as React.ChangeEvent<HTMLTextAreaElement>)
     }
   }
 
   if (!mounted) return null
 
   return (
-
-    <div className="flex flex-col items-center justify-center py-4 sm:py-6 md:py-8 w-full max-w-3xl mx-auto px-2">
+    <div className="flex flex-col items-center justify-center py-4 sm:py-6 md:py-8 w-full max-w-3xl mx-auto px-4 sm:px-6 md:px-8">
       <div className="w-full">
-        <Card className="overflow-hidden border-gray-200 dark:border-gray-800 shadow-md bg-white dark:bg-gray-900">
-          <CardHeader className="pb-2 relative z-10 bg-white dark:bg-gray-900">
+        <Card className="overflow-hidden border-gray-200 dark:border-gray-800 shadow-md bg-white dark:bg-gray-900 w-full">
+          <CardHeader className="pb-2 relative bg-white dark:bg-gray-900">
             <div className="flex items-center mb-3">
               <div className="bg-gradient-to-r from-law-primary to-law-secondary p-2.5 rounded-xl shadow-md">
                 <Scale className="h-5 w-5 text-white" />
@@ -47,16 +38,16 @@ export function WelcomeMessage({ onNewProject }: WelcomeMessageProps) {
             </div>
 
             <CardTitle className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-law-primary to-law-secondary bg-clip-text text-transparent dark:text-transparent">
-              Welcome to LawGPT Assistant
+              Welcome to LawGPT India
             </CardTitle>
             <CardDescription className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-              Your AI-powered legal research and information companion
+              Your AI-powered legal research and information companion for Indian laws
             </CardDescription>
           </CardHeader>
 
           <CardContent className="text-sm text-gray-700 dark:text-gray-300 pb-6 relative z-10 bg-white dark:bg-gray-900">
             <p className="mb-5">
-              I&apos;m here to help you with legal questions, document analysis, case research, and more.
+              I&apos;m here to help you with Indian legal questions, case laws, document drafting, and more.
               How can I assist you today?
             </p>
 
@@ -68,23 +59,23 @@ export function WelcomeMessage({ onNewProject }: WelcomeMessageProps) {
 
               {[
                 {
-                  title: "What are my rights as a tenant?",
-                  description: "Understand rental laws and tenant protections",
+                  title: "What are the divorce laws in India?",
+                  description: "Hindu Marriage Act, Special Marriage Act, grounds for divorce",
                   icon: <BookOpen className="h-4 w-4" />
                 },
                 {
-                  title: "Explain contract law basics",
-                  description: "Learn about formation, terms, and enforcement",
+                  title: "What are my rights in case of dowry harassment?",
+                  description: "Dowry Prohibition Act, IPC 498A, legal remedies",
                   icon: <BookOpen className="h-4 w-4" />
                 },
                 {
-                  title: "How does copyright protection work?",
-                  description: "Coverage for creative works and fair use exceptions",
+                  title: "How does property inheritance work in India?",
+                  description: "Hindu Succession Act, Muslim inheritance laws, will execution",
                   icon: <BookOpen className="h-4 w-4" />
                 },
                 {
-                  title: "What is the difference between a felony and misdemeanor?",
-                  description: "Criminal law classifications and consequences",
+                  title: "What are the laws on sexual harassment and rape in India?",
+                  description: "IPC 375, POSH Act, legal protections for women",
                   icon: <BookOpen className="h-4 w-4" />
                 }
               ].map((suggestion, index) => (
@@ -100,17 +91,17 @@ export function WelcomeMessage({ onNewProject }: WelcomeMessageProps) {
             </div>
 
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3 mt-6">
-              <CategoryCard title="Legal Research" color="from-blue-500 to-indigo-600" />
-              <CategoryCard title="Document Help" color="from-emerald-500 to-teal-600" />
-              <CategoryCard title="Case Analysis" color="from-orange-500 to-amber-600" />
-              <CategoryCard title="Legal Terms" color="from-purple-500 to-fuchsia-600" />
+              <CategoryCard title="Family Law" color="from-blue-500 to-indigo-600" />
+              <CategoryCard title="Criminal Law" color="from-red-500 to-orange-600" />
+              <CategoryCard title="Property Rights" color="from-green-500 to-teal-600" />
+              <CategoryCard title="Employment Laws" color="from-purple-500 to-pink-600" />
             </div>
 
             {onNewProject && (
               <div className="mt-6 text-center">
                 <Button
                   variant="outline"
-                  className="border-dashed border-gray-300 dark:border-gray-700 hover:border-law-primary/50 bg-white dark:bg-gray-900"
+                  className="border-dashed border-gray-300 dark:border-gray-700 hover:border-law-primary/50 bg-white dark:bg-gray-900 w-full sm:w-auto"
                   onClick={onNewProject}
                 >
                   <Save className="h-4 w-4 mr-2" />
@@ -133,34 +124,23 @@ interface SuggestionButtonProps {
   delay: number
 }
 
-const SuggestionButton: React.FC<SuggestionButtonProps> = ({
-  text,
-  description,
-  onClick,
-  delay
-}) => {
+const SuggestionButton: React.FC<SuggestionButtonProps> = ({ text, description, onClick, delay }) => {
   return (
-    <div
-      className="animate-fadeIn"
-      style={{ animationDelay: `${delay}s` }}
-    >
+    <div className="animate-fadeIn" style={{ animationDelay: `${delay}s` }}>
       <Button
         variant="outline"
-        className="w-full justify-between text-left h-auto py-2.5 px-3 sm:py-3 sm:px-4 
-        hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-law-primary/50 transition-all
-        group"
+        className="w-full justify-between text-left h-auto py-2.5 px-3 sm:py-3 sm:px-4 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-law-primary/50 transition-all group"
         onClick={onClick}
       >
         <div className="flex flex-col items-start">
-          <span className="font-medium text-gray-800 dark:text-gray-200 text-sm sm:text-base line-clamp-1">{text}</span>
-          <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">{description}</span>
+          <span className="font-medium text-gray-800 dark:text-gray-200 text-sm sm:text-base break-words whitespace-normal">{text}</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 break-words whitespace-normal">{description}</span>
         </div>
         <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-law-primary shrink-0 ml-2" />
       </Button>
     </div>
   )
 }
-
 interface CategoryCardProps {
   title: string
   color: string
