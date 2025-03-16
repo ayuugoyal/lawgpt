@@ -11,3 +11,10 @@ export interface ChatState {
   error: string | null
 }
 
+export type ChatSession = {
+  id: number;
+  title: string;
+  messages: Message[];
+  createdAt: Date;
+  updatedAt: Date;
+};

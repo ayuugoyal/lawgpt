@@ -2,9 +2,7 @@
 
 import type { FC, ReactNode } from "react"
 import { Scale, Menu, FolderOpen } from "lucide-react"
-import { MoonIcon, SunIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useTheme } from "next-themes"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { UserButton } from "@clerk/nextjs"
@@ -23,13 +21,12 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
   projectName,
   onSidebarToggle
 }) => {
-  const { theme, setTheme } = useTheme()
 
   const displayTitle = projectName || title
 
   return (
     <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 
-      flex items-center justify-between px-3 py-2.5 sm:px-4 sm:py-3 lg:px-6">
+      flex items-center justify-between px-3 pl-12 sm:pl-0 py-4 sm:px-4 sm:py-3 lg:px-6">
       <div className="flex items-center space-x-2 sm:space-x-3">
         {onSidebarToggle && (
           <TooltipProvider>

@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json();
 
-    console.log('messages', messages);
+    console.log("messages", messages);
 
     const model = new ChatGoogleGenerativeAI({
       apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
