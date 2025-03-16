@@ -74,7 +74,7 @@ const MessageComponent: FC<MessageProps> = ({ message, isNextMessageSamePerson }
                       {children}
                     </a>
                   ),
-                  code: ({ children, className, node, ...props }) => {
+                  code: ({ children, className, ...props }) => {
                     const match = /language-(\w+)/.exec(className || '')
                     return match ? (
                       <pre className="bg-gray-800 text-gray-100 dark:bg-black dark:text-gray-100 p-2 rounded text-sm overflow-x-auto">

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { chats } from "@/db/schema";
+import { chats, messages } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq, and } from "drizzle-orm";
 
@@ -80,6 +80,19 @@ export async function DELETE(
   }
 
   try {
+    // First check if the chat exists and belongs to the user
+    const chat = await db.query.chats.findFirst({
+      where: and(eq(chats.id, chatId), eq(chats.userId, userId)),
+    });
+
+    if (!chat) {
+      return NextResponse.json({ error: "Chat not found" }, { status: 404 });
+    }
+
+    // Delete related messages first
+    await db.delete(messages).where(eq(messages.chatId, chatId));
+
+    // Then delete the chat
     await db
       .delete(chats)
       .where(and(eq(chats.id, chatId), eq(chats.userId, userId)));

@@ -1,14 +1,14 @@
 export interface Message {
-  id: string
-  type: "user" | "bot"
-  text: string
-  createdAt?: Date
+  id: string;
+  type: "user" | "bot";
+  text: string;
+  createdAt?: Date;
 }
 
 export interface ChatState {
-  messages: Message[]
-  loading: boolean
-  error: string | null
+  messages: Message[];
+  loading: boolean;
+  error: string | null;
 }
 
 export type ChatSession = {
@@ -18,3 +18,11 @@ export type ChatSession = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export interface NewMsg {
+  id: string;
+  role: string;
+  content: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}

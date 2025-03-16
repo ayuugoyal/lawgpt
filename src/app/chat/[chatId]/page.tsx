@@ -8,7 +8,7 @@ import { ChatInput } from "@/components/chat/chat-input";
 import { Message } from "@/components/chat/message";
 import { WelcomeMessage } from "@/components/chat/welcome-message";
 import { LoadingDots } from "@/components/chat/loading-dots";
-import type { Message as MessageType } from "@/types/chat";
+import type { Message as MessageType, NewMsg } from "@/types/chat";
 
 export default function ChatPage() {
   const params = useParams();
@@ -24,9 +24,9 @@ export default function ChatPage() {
         await saveMessage("assistant", message.content);
       }
     }
-
   });
 
+  // Load existing messages for this chat
   const loadMessages = async () => {
     if (chatId) {
       try {
@@ -34,13 +34,11 @@ export default function ChatPage() {
         const chatMessages = await response.json();
 
         // Convert the DB messages to the format expected by useChat
-        const formattedMessages = chatMessages.map((msg: any) => ({
+        const formattedMessages = chatMessages.map((msg: NewMsg) => ({
           id: msg.id,
           role: msg.role,
           content: msg.content
         }));
-
-        console.log("formattedMessages", formattedMessages);
 
         setMessages(formattedMessages);
 
@@ -62,10 +60,9 @@ export default function ChatPage() {
     }
   };
 
-  // Load existing messages for this chat
   useEffect(() => {
     loadMessages();
-  }, [chatId]);
+  }, [chatId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Scroll to bottom when messages change
   useEffect(() => {

@@ -136,7 +136,6 @@ interface SuggestionButtonProps {
 const SuggestionButton: React.FC<SuggestionButtonProps> = ({
   text,
   description,
-  icon,
   onClick,
   delay
 }) => {

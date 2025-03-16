@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useUser, UserButton } from "@clerk/nextjs";
+import { ChatSession } from "@/types/chat";
 
 type Chat = {
     id: number;
@@ -42,28 +43,28 @@ export function ChatSidebar() {
 
     const { user } = useUser()
 
+    const fetchChats = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetch("/api/chats");
+            const data = await response.json();
+
+            // Transform the data and add some sample pinned/unread statuses
+            const transformedChats = data.map((chat: ChatSession) => ({
+                ...chat,
+                createdAt: new Date(chat.createdAt),
+                updatedAt: new Date(chat.updatedAt),
+            }));
+
+            setChats(transformedChats);
+        } catch (error) {
+            console.error("Failed to fetch chats:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchChats = async () => {
-            setIsLoading(true);
-            try {
-                const response = await fetch("/api/chats");
-                const data = await response.json();
-
-                // Transform the data and add some sample pinned/unread statuses
-                const transformedChats = data.map((chat: any, index: number) => ({
-                    ...chat,
-                    createdAt: new Date(chat.createdAt),
-                    updatedAt: new Date(chat.updatedAt),
-                }));
-
-                setChats(transformedChats);
-            } catch (error) {
-                console.error("Failed to fetch chats:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
         fetchChats();
     }, []);
 
@@ -78,6 +79,9 @@ export function ChatSidebar() {
             });
 
             const newChat = await response.json();
+
+            fetchChats();
+
             router.push(`/chat/${newChat.id}`);
         } catch (error) {
             console.error("Failed to create new chat:", error);
@@ -95,9 +99,10 @@ export function ChatSidebar() {
                 });
                 setChats(chats.filter(chat => chat.id !== chatId));
 
+                fetchChats();
                 // Redirect to home if deleting the currently active chat
                 if (pathname === `/chat/${chatId}`) {
-                    router.push("/");
+                    router.push("/chat");
                 }
             } catch (error) {
                 console.error("Failed to delete chat:", error);

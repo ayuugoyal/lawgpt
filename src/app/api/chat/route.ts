@@ -1,3 +1,4 @@
+import { NewMsg } from "@/types/chat";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { LangChainAdapter } from "ai";
 import type { NextRequest } from "next/server";
@@ -29,7 +30,7 @@ export async function POST(req: NextRequest) {
       maxOutputTokens: 2048,
     });
 
-    const formattedMessages = messages.map((message: any) => {
+    const formattedMessages = messages.map((message: NewMsg) => {
       return {
         role: message.role === "user" ? "human" : "assistant",
         content: message.content,
