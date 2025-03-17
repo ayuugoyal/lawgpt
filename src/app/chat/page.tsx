@@ -22,12 +22,14 @@ export default function NewChatPage() {
         setIsLoading(true);
 
         try {
+            const title = input.slice(0, 30) + (input.length > 30 ? "..." : "");
+
             const chatResponse = await fetch("/api/chats", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ title: input }),
+                body: JSON.stringify({ title: title }),
             });
 
             if (!chatResponse.ok) {
@@ -36,19 +38,20 @@ export default function NewChatPage() {
 
             const newChat = await chatResponse.json();
 
-            console.log("newChat", newChat.id);
-
-            const title = input.slice(0, 30) + (input.length > 30 ? "..." : "");
+            console.log("New Chat Saved", newChat);
 
             const saveMsg = await fetch(`/api/chats/${newChat.id}/messages`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ role: "user", content: title }),
+                body: JSON.stringify({ role: "user", content: input }),
             });
+
             const mam = await saveMsg.json();
+
             console.log("saveMsg", mam);
+
             router.push(`/chat/${newChat.id}`);
         } catch (error) {
             console.error("Failed to create chat:", error);
