@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LawGPT - AI-Powered Legal Assistant
 
-## Getting Started
 
-First, run the development server:
+LawGPT is an AI-driven legal assistant designed to provide instant legal guidance, simplify complex legal concepts, and help users navigate legal matters efficiently. It leverages Retrieval-Augmented Generation (RAG) to enhance responses with document-based legal knowledge.
+
+## Features
+- **AI-Powered Legal Guidance**: Get instant answers to legal queries.
+- **Document Analysis**: Upload and analyze legal documents.
+- **Legal Research**: Retrieve legal precedents, statutes, and regulations.
+- **Privacy & Security**: User data is securely processed.
+
+## Tech Stack
+
+- Python 3.8+
+- FastAPI
+- Next.js (with TypeScript, Tailwind CSS, ShadCN, DrizzleORM, Clerk, NeonDB)
+- HuggingFace Instruct Embeddings
+- FAISS Vectorstore
+- Gemini API
+- Vercel
+
+
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/ayuugoyal/lawgpt
+
+cd lawgpt
+
+pnpm install
+
+pnpm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## RAG Implementation (Retrieval-Augmented Generation)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Document Upload & Embeddings:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   - Upload PDFs via FastAPI endpoint.
+   - Extract text using `PyPDF2`.
+   - Split text into chunks using `langchain.text_splitter`.
+   - Generate embeddings using `HuggingFaceInstructEmbeddings`.
+   - Store embeddings in `FAISS` vector database.
 
-## Learn More
+2. **Search & Retrieval:**
 
-To learn more about Next.js, take a look at the following resources:
+   - Accepts user query.
+   - Encodes query using `SentenceTransformer`.
+   - Searches vector store for relevant text.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Chat with Gemini AI:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   - Uses retrieved context for response generation.
+   - Integrates Google Gemini API for enhanced answers.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Live Demo
+Try LawGPT live at: https://lawgpt.ayuugoyal.tech/
