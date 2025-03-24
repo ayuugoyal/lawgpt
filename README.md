@@ -5,7 +5,6 @@ LawGPT is an AI-driven legal assistant designed to provide instant legal guidanc
 
 ## Features
 - **AI-Powered Legal Guidance**: Get instant answers to legal queries.
-- **Document Analysis**: Upload and analyze legal documents.
 - **Legal Research**: Retrieve legal precedents, statutes, and regulations.
 - **Privacy & Security**: User data is securely processed.
 
